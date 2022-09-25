@@ -2,11 +2,11 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 2,
   "name": "create-block/fnugg-api",
-  "version": "0.1.0",
-  "title": "Fnugg Api",
+  "version": "1.0.0",
+  "title": "Ski Resort (Fungg API)",
   "category": "widgets",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Present data from a ski resort using the Fnugg API",
   "supports": {
     "html": false
   },

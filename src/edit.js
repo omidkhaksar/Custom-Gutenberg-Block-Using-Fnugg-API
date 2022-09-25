@@ -1,3 +1,10 @@
+import * as React from 'react';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { Box } from '@mui/system';
+import Autocomplete from '@mui/material/Autocomplete';
+
+
 /**
  * Retrieves the translation of text.
  *
@@ -30,9 +37,33 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit() {
-	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Fnugg Api – hello from the editor!', 'fnugg-api' ) }
-		</p>
-	);
+  const [value, setValue] = React.useState();
+  const [inputValue, setInputValue] = React.useState('');
+  const [jsonResult, setJsonResult] = React.useState([]);
+  React.useEffect (() => {
+		fetch(`https://api.fnugg.no/suggest/autocomplete?q=${inputValue}`)
+		.then((response)=>response.json())
+		.then((json)=>setJsonResult(json.result))
+	},[inputValue])
+  return (
+
+    <Stack>
+      <Autocomplete
+        id="controllable-states-demo"
+        getOptionLabel={(jsonResult)=> `${jsonResult.name}`}
+        options={jsonResult}
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
+
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} label="Search For Resort" />}
+      />
+    </Stack>
+  );
 }
