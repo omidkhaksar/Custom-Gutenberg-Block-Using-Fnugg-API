@@ -7,6 +7,12 @@
 	"category": "widgets",
 	"icon": "smiley",
 	"description": "Present data from a ski resort using the Fnugg API",
+	"attributes": {
+		"resortName":{
+			"type": "string",
+			"default" :""
+		}
+	},
 	"supports": {
 		"html": false
 	},

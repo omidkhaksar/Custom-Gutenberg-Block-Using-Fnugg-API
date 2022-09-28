@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import { Box } from '@mui/system';
 import Autocomplete from '@mui/material/Autocomplete';
 
 
@@ -36,34 +35,45 @@ import './editor.scss';
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit() {
-  const [value, setValue] = React.useState();
-  const [inputValue, setInputValue] = React.useState('');
+export default function Edit(props) {
+  const { attributes, setAttributes } = props
+	const { resortName } = attributes
+
+  const [value, setValue] = React.useState(resortName);
+  const [inputValue, setInputValue] = React.useState(resortName);
   const [jsonResult, setJsonResult] = React.useState([]);
-  React.useEffect (() => {
-		fetch(`https://api.fnugg.no/suggest/autocomplete?q=${inputValue}`)
-		.then((response)=>response.json())
-		.then((json)=>setJsonResult(json.result))
-	},[inputValue])
-  return (
 
-    <Stack>
-      <Autocomplete
-        id="controllable-states-demo"
-        getOptionLabel={(jsonResult)=> `${jsonResult.name}`}
-        options={jsonResult}
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        inputValue={inputValue}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
-        }}
+  React.useEffect(() => {
+    fetch(`https://api.fnugg.no/suggest/autocomplete?q=${inputValue}`)
+      .then((response) => response.json())
+      .then((json) => setJsonResult(json.result))
+  }, [inputValue])
+  if(jsonResult !==[]){
+    return (
+      <div {...useBlockProps()}>
+      <h3>Write Resort Name To Search:</h3>
+      <Stack>
+        <Autocomplete
+          id="controllable-states-demo"
+          // getOptionLabel={(jsonResult) => `${jsonResult.name}`}
+          options={jsonResult.map(({name})=>{return(name)})}
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            setAttributes({ resortName: String(newValue) });
+          }}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
 
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Search For Resort" />}
-      />
-    </Stack>
-  );
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Search For Resort" />}
+        />
+      </Stack>
+      </div>
+    );
+  }else{
+    return <p>loading...</p>;
+  }
 }
