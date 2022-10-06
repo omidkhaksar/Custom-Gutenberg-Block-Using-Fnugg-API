@@ -19,6 +19,9 @@ import { __ } from '@wordpress/i18n';
  */
 import { useBlockProps } from '@wordpress/block-editor';
 
+import apiFetch from "@wordpress/api-fetch";
+import { RichText } from "@wordpress/block-editor";
+import { addFilter, applyFilters } from "@wordpress/hooks";
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -42,12 +45,18 @@ export default function Edit(props) {
   const [value, setValue] = React.useState(resortName);
   const [inputValue, setInputValue] = React.useState(resortName);
   const [jsonResult, setJsonResult] = React.useState([]);
+  const uri = applyFilters("fnugg_autocompleter_remote_api_options_uri", [
+    window.location.origin+`/wp-json/fnugg/autocomplete/?q=`,
+    inputValue,
+  ]);
 
   React.useEffect(() => {
+    // fetch(uri[0]+uri[1])
     fetch(`https://api.fnugg.no/suggest/autocomplete?q=${inputValue}`)
       .then((response) => response.json())
       .then((json) => setJsonResult(json.result))
   }, [inputValue])
+  
   if(jsonResult !==[]){
     return (
       <div {...useBlockProps()}>

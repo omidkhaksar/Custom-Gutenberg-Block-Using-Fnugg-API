@@ -1,0 +1,16 @@
+{
+    "name": "mazaher/fnugg",
+    "description": "Present data from a ski resort using the Fnugg API",
+    "autoload": {
+        "psr-4": {
+            "Fnugg\\": "inc/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mazaherkhaksar",
+            "email": "mazaherkhaksar1994@gmail.com"
+        }
+    ],
+    "require": {}
+}
